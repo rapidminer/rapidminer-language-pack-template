@@ -1,0 +1,41 @@
+import org.gradle.util.VersionNumber
+if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.0.0')) {
+
+    configurations {
+        i18n {
+            description "jar files that contain i18n properties"
+            transitive false
+        }
+    }
+
+    dependencies {
+        i18n group: 'com.rapidminer.studio', name: 'i18n-extraction', version: "(,$extensionConfig.dependencies.rapidminer]"
+    }
+
+    if (project.tasks.findByName('initializeExtensionProject') != null) {
+        initializeExtensionProject.doLast {
+            copyLanguage('GUI')
+            copyLanguage('Errors')
+            copyLanguage('UserErrorMessages')
+            copyLanguage('Settings')
+            delete 'loadI18N.gradle'
+        }
+    }
+}
+
+def copyLanguage(resource) {
+    def source = resource + '.properties'
+    def langCode = language.replace(' ', '_').toLowerCase()
+    def targetDir = "src/main/resources/"
+    println source
+    println target
+    configurations.i18n.forEach { i ->
+        zipTree(i).filter { f -> f.path.startsWith('com') }.forEach { f ->
+            copy {
+                from f
+                into targetDir + f.getParent()
+                rename '\\.properties', '_' + langCode + '.properties'
+            }
+        }
+    }
+}
