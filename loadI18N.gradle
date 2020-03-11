@@ -14,28 +14,42 @@ if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumbe
 
     if (project.tasks.findByName('initializeExtensionProject') != null) {
         initializeExtensionProject.doLast {
-            copyLanguage('GUI')
-            copyLanguage('Errors')
-            copyLanguage('UserErrorMessages')
-            copyLanguage('Settings')
-            delete 'loadI18N.gradle'
+            copyResources()
+            //delete 'loadI18N.gradle'
         }
     }
 }
 
-def copyLanguage(resource) {
-    def source = resource + '.properties'
+def copyResources() {
     def langCode = language.replace(' ', '_').toLowerCase()
-    def targetDir = "src/main/resources/"
-    println source
-    println target
+    def resourceDir = "src/main/resources/"
+    def srcDir = "src/main/java/"
+    def groupID = project.group.replace('.', '/')
+    def extPackage = groupID + '/' + extensionConfig.namespace
+    def extName = extensionConfig.name.replace(' ', '')
     configurations.i18n.forEach { i ->
-        zipTree(i).filter { f -> f.path.startsWith('com') }.forEach { f ->
-            copy {
-                from f
-                into targetDir + f.getParent()
-                rename '\\.properties', '_' + langCode + '.properties'
-            }
+        copy {
+            from zipTree(i)
+            into resourceDir
+            rename '\\.properties', '_' + langCode + '.properties'
+            include 'com/rapidminer/**/**.properties'
+        }
+        copy {
+            from zipTree(i)
+            into resourceDir + extPackage
+            include 'language.content'
+        }
+        copy {
+            from zipTree(i)
+            into srcDir + extPackage
+            include '*.java'
         }
     }
+
+    fileTree(srcDir + extPackage).filter {f -> !f.name.contains('PluginInit')}. forEach { f ->
+        f.write 'package ' + extPackage.replace('/', '.') + ';\n' + f.text.replaceAll('PluginInit', 'PluginInit' + extName)
+    }
+    def pluginInit = file(srcDir + extPackage + '/PluginInit' + extName +".java")
+    pluginInit.write pluginInit.text.replace('initPlugin() {',
+            'initPlugin() {\n\t\t\tBundleLoader.loadBundles("' + langCode + '");\n\t\t')
 }

@@ -14,6 +14,7 @@ repositories {
 }
 
 ext {
+    // The language tag to be provided as specified here: https://tools.ietf.org/html/bcp47
     language = 'EN'
 }
 
@@ -50,6 +51,14 @@ extensionConfig {
     dependencies {
         rapidminer '9.6.0'
         //extension namespace: 'text', version: '8.1.0'
+    }
+    def groupID = project.group.replace('.', '/')
+    def extName = name.replace(' ', '')
+    resources {
+        errorDescription = groupID + '/resources/i18n/Errors' + extName + '.properties'
+        userErrors = groupID + '/resources/i18n/UserErrorMessages' + extName + '.properties'
+        guiDescription = groupID + '/resources/i18n/GUI' + extName + '.properties'
+        settingsDescriptor = groupID + '/resources/i18n/Settings' + extName + '.properties'
     }
 }
 
