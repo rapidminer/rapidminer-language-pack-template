@@ -22,34 +22,20 @@ if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumbe
 
 def copyResources() {
     def langCode = language.replace(' ', '_').toLowerCase()
-    def resourceDir = "src/main/resources/"
     def srcDir = "src/main/java/"
+    def resourceDir = "src/main/resources/"
     def groupID = project.group.replace('.', '/')
     def extPackage = groupID + '/' + extensionConfig.namespace
     def extName = extensionConfig.name.replace(' ', '')
     configurations.i18n.forEach { i ->
         copy {
             from zipTree(i)
-            into resourceDir
-            rename '\\.properties', '_' + langCode + '.properties'
-            include 'com/rapidminer/**/**.properties'
+            into resourceDir + groupID + '/resources/i18n/'
+            rename '\\.properties', extName + '_' + langCode + '.properties'
+            include '**.properties'
         }
-        copy {
-            from zipTree(i)
-            into resourceDir + extPackage
-            include 'language.content'
-        }
-        copy {
-            from zipTree(i)
-            into srcDir + extPackage
-            include '*.java'
-        }
-    }
-
-    fileTree(srcDir + extPackage).filter {f -> !f.name.contains('PluginInit')}. forEach { f ->
-        f.write 'package ' + extPackage.replace('/', '.') + ';\n' + f.text.replaceAll('PluginInit', 'PluginInit' + extName)
     }
     def pluginInit = file(srcDir + extPackage + '/PluginInit' + extName +".java")
-    pluginInit.write pluginInit.text.replace('initPlugin() {',
-            'initPlugin() {\n\t\t\tBundleLoader.loadBundles("' + langCode + '");\n\t\t')
+    pluginInit.write pluginInit.text.replace('MainFrame;', 'MainFrame;\nimport com.rapidminer.tools.I18N;')
+            .replace('initPlugin() {','initPlugin() {\n\t\t\tI18N.registerLanguage("' + langCode + '");\n\t\t')
 }
