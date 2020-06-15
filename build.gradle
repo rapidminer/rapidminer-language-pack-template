@@ -75,3 +75,7 @@ dependencies {
 if (file('loadI18N.gradle').exists()) {
     apply from: 'loadI18N.gradle'
 }
+
+shadowJar {
+    baseName 'rapidminer-language-pack-' + project.language.toLowerCase()
+}
