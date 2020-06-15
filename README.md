@@ -15,7 +15,7 @@ A template project for creating a RapidMiner Studio language pack.
 
 4. Initialize the language pack project by executing the _initializeExtensionProject_ Gradle task (e.g. via 'gradlew --no-daemon initializeExtensionProject')
 
-5. Provide your translations in the i18n files (by default) located at _/src/main/resources/com/rapidminer/extension/resources/i18n_. Look for the files that end with _"\_<language>"_. Original texts are provided above each key.
+5. Provide your translations in the i18n files (by default) located at _/src/main/resources/com/rapidminer/extension/resources/i18n_. Look for the files that end with _"\_<language>"_. Original texts are provided above each key and are preset as well.
 
 6. Add an extension icon by placing an image named "icon.png" (48x48 pixels) in  _src/main/resources/META-INF/_. 
 
