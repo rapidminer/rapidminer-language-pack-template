@@ -16,6 +16,12 @@ repositories {
 ext {
     // The language tag to be provided as specified here: https://tools.ietf.org/html/bcp47
     language = 'EN'
+    // The extend of what to prepare for translation. Possible values are:
+    // core: Only core i18n keys; this means all core keys and keys of all bundled extensions
+    // supported: All from core, and additionally all keys from supported extensions from marketplace (Vendor: RapidMiner)
+    //            These are: Mozenda Connector, NoSQL Connector, Python Scripting, Qlik Connector, R Scripting, RapidMiner Radoop,
+    //            SAS Connector, Solr Connector, Splunk Connector, Tableau Table Writer, Text Processing, Web Mining
+    i18n_pack = 'core'
 }
 
 extensionConfig {

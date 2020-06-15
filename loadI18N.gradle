@@ -9,7 +9,7 @@ if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumbe
     }
 
     dependencies {
-        i18n group: 'com.rapidminer.studio', name: 'i18n-extraction', version: "(,$extensionConfig.dependencies.rapidminer]"
+        i18n group: 'com.rapidminer.studio', name: 'i18n-keys', classifier: "$project.i18n_pack", version: "(,$extensionConfig.dependencies.rapidminer]"
     }
 
     if (project.tasks.findByName('initializeExtensionProject') != null) {
