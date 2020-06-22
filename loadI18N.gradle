@@ -1,4 +1,5 @@
 import org.gradle.util.VersionNumber
+
 if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.0.0')) {
 
     configurations {
@@ -21,7 +22,8 @@ if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumbe
 }
 
 def copyResources() {
-    def langCode = language.replace(' ', '_').toLowerCase()
+    def langCodeSplit = language.split("[ _-]", 2)
+    def langCode = langCodeSplit[0].toLowerCase() + (langCodeSplit.length > 1 ? "-" + langCodeSplit[1].toUpperCase() : "")
     def srcDir = "src/main/java/"
     def resourceDir = "src/main/resources/"
     def groupID = project.group.replace('.', '/')
