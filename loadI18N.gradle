@@ -37,7 +37,7 @@ def copyResources() {
         copy {
             from zipTree(i)
             into resourceDir + groupID + '/resources/i18n/'
-            rename '\\.properties', extName + '_' + langCode + '.properties'
+            rename '\\.properties', extName + '_' + langCode.replace('-', '_') + '.properties'
             include '**.properties'
 
         }
