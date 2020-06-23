@@ -1,13 +1,15 @@
 import org.gradle.util.VersionNumber
 
-if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.0.0')) {
+if (!(VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.1.0'))) {
+    throw new Exception("Version must be at least 9.1.0, but was " + extensionConfig.dependencies.rapidminer)
+}
 
-    configurations {
-        i18n {
-            description "jar files that contain i18n properties"
-            transitive false
-        }
+configurations {
+    i18n {
+        description "jar files that contain i18n properties"
+        transitive false
     }
+}
 
     dependencies {
         i18n group: 'com.rapidminer.studio', name: 'i18n-keys', classifier: "$project.i18n_pack", version: "(,$extensionConfig.dependencies.rapidminer]"
@@ -19,25 +21,28 @@ if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumbe
             //delete 'loadI18N.gradle'
         }
     }
-}
 
 def copyResources() {
-    def langCodeSplit = language.split("[ _-]", 2)
-    def langCode = langCodeSplit[0].toLowerCase() + (langCodeSplit.length > 1 ? "-" + langCodeSplit[1].toUpperCase() : "")
+    def langCodeSplit = language.replace('[ _]', '-').split('-', 3)
+    def langCode = langCodeSplit[0].toLowerCase()
+        + (langCodeSplit.length > 1 ? "-" + langCodeSplit[1].toUpperCase() : "")
+        + (langCodeSplit.length > 2 ? "-" + langCodeSplit[2] : "")
     def srcDir = "src/main/java/"
     def resourceDir = "src/main/resources/"
     def groupID = project.group.replace('.', '/')
     def extPackage = groupID + '/' + extensionConfig.namespace
     def extName = extensionConfig.name.replace(' ', '')
+    def className = extName.replace('-', '_')
     configurations.i18n.forEach { i ->
         copy {
             from zipTree(i)
             into resourceDir + groupID + '/resources/i18n/'
             rename '\\.properties', extName + '_' + langCode + '.properties'
             include '**.properties'
+
         }
     }
-    def pluginInit = file(srcDir + extPackage + '/PluginInit' + extName +".java")
+    def pluginInit = file(srcDir + extPackage + '/PluginInit' + className +".java")
     pluginInit.write pluginInit.text.replace('MainFrame;', 'MainFrame;\nimport com.rapidminer.tools.I18N;')
             .replace('initPlugin() {','initPlugin() {\n\t\t\tI18N.registerLanguage("' + langCode + '");\n\t\t')
 }

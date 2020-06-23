@@ -17,10 +17,11 @@ ext {
     // The language tag to be provided as specified here: https://tools.ietf.org/html/bcp47
     language = 'EN'
     // The extend of what to prepare for translation. Possible values are:
-    // core: Only core i18n keys; this means all core keys and keys of all bundled extensions
+    // core: Only core i18n keys; this means all core keys and keys of all extensions that are shipped directly with RapidMiner
     // supported: All from core, and additionally all keys from supported extensions from marketplace (Vendor: RapidMiner)
-    //            These are: Mozenda Connector, NoSQL Connector, Python Scripting, Qlik Connector, R Scripting, RapidMiner Radoop,
-    //            SAS Connector, Solr Connector, Splunk Connector, Tableau Table Writer, Text Processing, Web Mining
+    //            These are: Mozenda Connector, NoSQL Connector, Python Scripting, Qlik Connector, R Scripting,
+    //            RapidMiner Radoop, SAS Connector, Solr Connector, Splunk Connector, Tableau Table Writer,
+    //            Text Processing, Web Mining, In-Database Processing
     i18n_pack = 'core'
 }
 
@@ -56,7 +57,6 @@ extensionConfig {
     // define RapidMiner version and extension dependencies
     dependencies {
         rapidminer '9.7.0'
-        //extension namespace: 'text', version: '8.1.0'
     }
     def groupID = project.group.replace('.', '/')
     def extName = name.replace(' ', '')
