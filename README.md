@@ -24,3 +24,10 @@ A template project for creating a RapidMiner Studio language pack.
 8. Build and install your extension by executing the _installExtension_ Gradle task 
 
 9. Start RapidMiner Studio and check whether your extension has been loaded and change the language setting to check your translation after a restart
+
+### Notes and limitations
+* Not all extensions have proper i18n; e.g. Auto Model/Turbo Prep have a lot of hard coded text
+* New HTML views might not allow translations
+* Operator help xmls cannot be translated at the current state (9.7)
+* Tutorials and Templates cannot be translated at the current state (9.7)
+* _Open Sans_ is the hard coded font in several places. Since this font does not include all UTF8 characters, users would need a modified font installed
