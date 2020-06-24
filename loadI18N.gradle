@@ -37,6 +37,7 @@ def copyResources() {
     if (!LocaleUtils.isAvailableLocale(Locale.forLanguageTag(langCode))) {
         throw new IllegalArgumentException("Language tag $langCode is not supported")
     }
+    langCode = Locale.forLanguageTag(langCode).toLanguageTag()
     def srcDir = "src/main/java/"
     def resourceDir = "src/main/resources/"
     def groupID = project.group.replace('.', '/')

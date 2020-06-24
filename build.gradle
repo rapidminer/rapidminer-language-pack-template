@@ -32,7 +32,7 @@ ext {
 extensionConfig {
 
     // The extension name
-    name "Language Pack $project.language".replace('-', '_')
+    name "Language Pack " + project.language.replaceAll('([ -_])([a-zA-Z])', { Object[] x -> x[2].toUpperCase() }).capitalize()
 
     /*
      * The artifact group which will be used when publishing the extensions Jar
