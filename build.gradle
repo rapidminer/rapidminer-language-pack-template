@@ -14,8 +14,8 @@ repositories {
 }
 
 ext {
-    // The language tag to be provided as specified here: https://tools.ietf.org/html/bcp47
     language = 'EN'
+    // The language tag to be provided as specified here: https://www.oracle.com/java/technologies/javase/jdk8-jre8-suported-locales.html
     // The extend of what to prepare for translation. Possible values are:
     // core: Only core i18n keys; this means all core keys and keys of all extensions that are shipped directly with RapidMiner
     // supported: All from core, and additionally all keys from supported extensions from marketplace (Vendor: RapidMiner)

@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'commons-lang:commons-lang:2.6'
+    }
+}
+
 import org.gradle.util.VersionNumber
+import org.apache.commons.lang.LocaleUtils
 
 if (!(VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.1.0'))) {
     throw new Exception("Version must be at least 9.1.0, but was " + extensionConfig.dependencies.rapidminer)
@@ -23,10 +33,10 @@ configurations {
     }
 
 def copyResources() {
-    def langCodeSplit = language.replace('[ _]', '-').split('-', 3)
-    def langCode = langCodeSplit[0].toLowerCase() +
-        (langCodeSplit.length > 1 ? "-" + langCodeSplit[1].toUpperCase() : "") +
-        (langCodeSplit.length > 2 ? "-" + langCodeSplit[2] : "")
+    def langCode = language.replace('[ _]', '-')
+    if (!LocaleUtils.isAvailableLocale(Locale.forLanguageTag(langCode))) {
+        throw new IllegalArgumentException("Language tag $langCode is not supported")
+    }
     def srcDir = "src/main/java/"
     def resourceDir = "src/main/resources/"
     def groupID = project.group.replace('.', '/')
