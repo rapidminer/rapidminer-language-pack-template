@@ -32,7 +32,7 @@ ext {
 extensionConfig {
 
     // The extension name
-    name "Language Pack $project.language"
+    name "Language Pack $project.language".replace('-', '_')
 
     /*
      * The artifact group which will be used when publishing the extensions Jar

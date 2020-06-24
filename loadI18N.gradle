@@ -42,7 +42,6 @@ def copyResources() {
     def groupID = project.group.replace('.', '/')
     def extPackage = groupID + '/' + extensionConfig.namespace
     def extName = extensionConfig.name.replace(' ', '')
-    def className = extName.replace('-', '_')
     configurations.i18n.forEach { i ->
         copy {
             from zipTree(i)
@@ -52,7 +51,7 @@ def copyResources() {
 
         }
     }
-    def pluginInit = file(srcDir + extPackage + '/PluginInit' + className +".java")
+    def pluginInit = file(srcDir + extPackage + '/PluginInit' + extName +".java")
     pluginInit.write pluginInit.text.replace('MainFrame;', 'MainFrame;\nimport com.rapidminer.tools.I18N;')
             .replace('initPlugin() {','initPlugin() {\n\t\t\tI18N.registerLanguage("' + langCode + '");\n\t\t')
 }
