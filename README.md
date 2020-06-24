@@ -25,6 +25,11 @@ A template project for creating a RapidMiner Studio language pack.
 
 9. Start RapidMiner Studio and check whether your extension has been loaded and change the language setting to check your translation after a restart
 
+### Resetting extension
+You can use the _reset_ Gradle task to reset the extension to its pre-initialized state and start from scratch.
+ 
+ **NOTE:** This will delete all classes and resources etc-. Be mindful before using this task.
+
 ### Notes and limitations
 * Not all extensions have proper i18n; e.g. Auto Model/Turbo Prep have a lot of hard coded text
 * New HTML views might not allow translations

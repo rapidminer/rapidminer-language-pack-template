@@ -55,3 +55,13 @@ def copyResources() {
     pluginInit.write pluginInit.text.replace('MainFrame;', 'MainFrame;\nimport com.rapidminer.tools.I18N;')
             .replace('initPlugin() {','initPlugin() {\n\t\t\tI18N.registerLanguage("' + langCode + '");\n\t\t')
 }
+
+task reset(type: Delete) {
+    group 'rapidminer extension'
+    description 'removes all files related with RapidMiner extension; use with caution!'
+    delete file('changes')
+    delete file('config')
+    delete file('licenses')
+    delete file('src')
+    delete file('test-processes')
+}
