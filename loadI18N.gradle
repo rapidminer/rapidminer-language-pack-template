@@ -24,9 +24,9 @@ configurations {
 
 def copyResources() {
     def langCodeSplit = language.replace('[ _]', '-').split('-', 3)
-    def langCode = langCodeSplit[0].toLowerCase()
-        + (langCodeSplit.length > 1 ? "-" + langCodeSplit[1].toUpperCase() : "")
-        + (langCodeSplit.length > 2 ? "-" + langCodeSplit[2] : "")
+    def langCode = langCodeSplit[0].toLowerCase() +
+        (langCodeSplit.length > 1 ? "-" + langCodeSplit[1].toUpperCase() : "") +
+        (langCodeSplit.length > 2 ? "-" + langCodeSplit[2] : "")
     def srcDir = "src/main/java/"
     def resourceDir = "src/main/resources/"
     def groupID = project.group.replace('.', '/')
