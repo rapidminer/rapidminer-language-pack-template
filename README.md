@@ -11,7 +11,8 @@ A template project for creating a RapidMiner Studio language pack.
 
 2. Change the **language** pack settings in _build.gradle_ (e.g. replace 'EN' by the desired language descriptor; you can find supported language locales [here](https://www.oracle.com/java/technologies/javase/jdk8-jre8-suported-locales.html). Simple locales like 'EN', 'IT' or 'DE' are allowed as well)
 
-3. Change how much you want to translate by changing the **i18n_pack** settings in _build.gradle_ (currently available: core, supported)
+3. Change how much you want to translate by changing the **i18n_pack** settings in _build.gradle_ (currently available: core, supported).
+ Check the comment in _build.gradle_ for an explanation of the available i18n packs.
 
 4. Change the RapidMiner Studio dependency to a version of your liking (must be at least 9.1.0)
 

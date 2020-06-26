@@ -21,7 +21,7 @@ ext {
     // This can be a locale as well, e.g. EN, DE, IT etc.
     language = 'EN'
     // The extend of what to prepare for translation. Possible values are:
-    // core: Only core i18n keys; this means all core keys and keys of all extensions that are shipped directly with RapidMiner
+    // core:      Only core i18n keys; this means all core keys and keys of all extensions that are shipped directly with RapidMiner
     // supported: All from core, and additionally all keys from supported extensions from marketplace (Vendor: RapidMiner)
     //            These are: Mozenda Connector, NoSQL Connector, Python Scripting, Qlik Connector, R Scripting,
     //            RapidMiner Radoop, SAS Connector, Solr Connector, Splunk Connector, Tableau Table Writer,
