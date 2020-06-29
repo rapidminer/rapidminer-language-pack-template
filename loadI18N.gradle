@@ -1,41 +1,68 @@
-import org.gradle.util.VersionNumber
-if (VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.0.0')) {
-
-    configurations {
-        i18n {
-            description "jar files that contain i18n properties"
-            transitive false
-        }
+buildscript {
+    repositories {
+        jcenter()
     }
+    dependencies {
+        classpath 'commons-lang:commons-lang:2.6'
+    }
+}
+
+import org.gradle.util.VersionNumber
+import org.apache.commons.lang.LocaleUtils
+
+if (!(VersionNumber.parse(extensionConfig.dependencies.rapidminer) >= VersionNumber.parse('9.1.0'))) {
+    throw new Exception("Version must be at least 9.1.0, but was " + extensionConfig.dependencies.rapidminer)
+}
+
+configurations {
+    i18n {
+        description "jar files that contain i18n properties"
+        transitive false
+    }
+}
 
     dependencies {
-        i18n group: 'com.rapidminer.studio', name: 'i18n-extraction', version: "(,$extensionConfig.dependencies.rapidminer]"
+        i18n group: 'com.rapidminer.studio', name: 'i18n-keys', classifier: "$project.i18n_pack", version: "(,$extensionConfig.dependencies.rapidminer]"
     }
 
     if (project.tasks.findByName('initializeExtensionProject') != null) {
         initializeExtensionProject.doLast {
-            copyLanguage('GUI')
-            copyLanguage('Errors')
-            copyLanguage('UserErrorMessages')
-            copyLanguage('Settings')
-            delete 'loadI18N.gradle'
+            copyResources()
+            //delete 'loadI18N.gradle'
         }
     }
+
+def copyResources() {
+    def langCode = language.replace('[ _]', '-')
+    if (!LocaleUtils.isAvailableLocale(Locale.forLanguageTag(langCode))) {
+        throw new IllegalArgumentException("Language tag $langCode is not supported")
+    }
+    langCode = Locale.forLanguageTag(langCode).toLanguageTag()
+    def srcDir = "src/main/java/"
+    def resourceDir = "src/main/resources/"
+    def groupID = project.group.replace('.', '/')
+    def extPackage = groupID + '/' + extensionConfig.namespace
+    def extName = extensionConfig.name.replace(' ', '')
+    configurations.i18n.forEach { i ->
+        copy {
+            from zipTree(i)
+            into resourceDir + groupID + '/resources/i18n/'
+            rename '\\.properties', extName + '_' + langCode.replace('-', '_') + '.properties'
+            include '**.properties'
+
+        }
+    }
+    def pluginInit = file(srcDir + extPackage + '/PluginInit' + extName +".java")
+    pluginInit.write pluginInit.text.replace('MainFrame;', 'MainFrame;\nimport com.rapidminer.tools.I18N;')
+            .replace('initPlugin() {','initPlugin() {\n\t\t\tI18N.registerLanguage("' + langCode + '");\n\t\t')
 }
 
-def copyLanguage(resource) {
-    def source = resource + '.properties'
-    def langCode = language.replace(' ', '_').toLowerCase()
-    def targetDir = "src/main/resources/"
-    println source
-    println target
-    configurations.i18n.forEach { i ->
-        zipTree(i).filter { f -> f.path.startsWith('com') }.forEach { f ->
-            copy {
-                from f
-                into targetDir + f.getParent()
-                rename '\\.properties', '_' + langCode + '.properties'
-            }
-        }
-    }
+task reset(type: Delete) {
+    group 'rapidminer extension'
+    description 'removes all files related with RapidMiner extension; use with caution!'
+    delete file('changes')
+    delete file('config')
+    delete file('licenses')
+    delete file('src')
+    delete file('test-processes')
 }

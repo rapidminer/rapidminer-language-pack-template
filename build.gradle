@@ -3,6 +3,9 @@ buildscript {
 	    jcenter()
 		maven { url 'https://maven.rapidminer.com/content/groups/public/' }
 	}
+    dependencies {
+        classpath 'commons-lang:commons-lang:2.6'
+    }
 }
 
 plugins { id 'com.rapidminer.extension' version '0.9.4' }
@@ -14,13 +17,22 @@ repositories {
 }
 
 ext {
+    // The language tag to be provided as specified here: https://www.oracle.com/java/technologies/javase/jdk8-jre8-suported-locales.html
+    // This can be a locale as well, e.g. EN, DE, IT etc.
     language = 'EN'
+    // The extend of what to prepare for translation. Possible values are:
+    // core:      Only core i18n keys; this means all core keys and keys of all extensions that are shipped directly with RapidMiner
+    // supported: All from core, and additionally all keys from supported extensions from marketplace (Vendor: RapidMiner)
+    //            These are: Mozenda Connector, NoSQL Connector, Python Scripting, Qlik Connector, R Scripting,
+    //            RapidMiner Radoop, SAS Connector, Solr Connector, Splunk Connector, Tableau Table Writer,
+    //            Text Processing, Web Mining, In-Database Processing
+    i18n_pack = 'core'
 }
 
 extensionConfig {
 
     // The extension name
-    name "Language Pack $project.language"
+    name "Language Pack " + project.language.replaceAll('([ -_])([a-zA-Z])', { Object[] x -> x[2].toUpperCase() }).capitalize()
 
     /*
      * The artifact group which will be used when publishing the extensions Jar
@@ -48,8 +60,15 @@ extensionConfig {
 
     // define RapidMiner version and extension dependencies
     dependencies {
-        rapidminer '9.6.0'
-        //extension namespace: 'text', version: '8.1.0'
+        rapidminer '9.1.0'
+    }
+    def groupID = project.group.replace('.', '/')
+    def extName = name.replace(' ', '')
+    resources {
+        errorDescription = groupID + '/resources/i18n/Errors' + extName + '.properties'
+        userErrors = groupID + '/resources/i18n/UserErrorMessages' + extName + '.properties'
+        guiDescription = groupID + '/resources/i18n/GUI' + extName + '.properties'
+        settingsDescriptor = groupID + '/resources/i18n/Settings' + extName + '.properties'
     }
 }
 
@@ -59,4 +78,8 @@ dependencies {
 }
 if (file('loadI18N.gradle').exists()) {
     apply from: 'loadI18N.gradle'
+}
+
+shadowJar {
+    baseName 'rapidminer-language-pack-' + project.language.toLowerCase()
 }
