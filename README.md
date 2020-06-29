@@ -26,6 +26,16 @@ A template project for creating a RapidMiner Studio language pack.
 
 9. Start RapidMiner Studio and check whether your extension has been loaded and change the language setting to check your translation after a restart
 
+### Sharing your translations
+To share your language pack with the RapidMiner community, you can register your extension on the [RapidMiner Marketplace](https://marketplace.rapidminer.com/UpdateServer/faces/restricted/file_product_request.xhtml).
+The information that you will need are the following
+* Product Name: The name of your language pack.
+* Product ID: You will need to provide the ID as follows *rmx_language_pack_<lang>*, where the *lang* placeholder
+is your language with all separators (like dash "-" and underscore "_") removed and all lower case.
+* A short description of the language pack
+
+You can also set the development stage of your translation and provide a website link if you like. 
+
 ### Resetting extension
 You can use the _reset_ Gradle task to reset the extension to its pre-initialized state and start from scratch.
  
