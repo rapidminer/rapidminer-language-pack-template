@@ -27,7 +27,7 @@ A template project for creating a RapidMiner Studio language pack.
 9. Start RapidMiner Studio and check whether your extension has been loaded and change the language setting to check your translation after a restart
 
 ### Sharing your translations
-To share your language pack with the RapidMiner community, you can register your extension on the [RapidMiner Marketplace](https://marketplace.rapidminer.com/UpdateServer/faces/restricted/file_product_request.xhtml).
+To share your language pack with all RapidMiner users, you can register your extension on the [RapidMiner Marketplace](https://marketplace.rapidminer.com/UpdateServer/faces/restricted/file_product_request.xhtml).
 The information that you will need are the following
 * Product Name: The name of your language pack.
 * Product ID: You will need to provide the ID as follows *rmx_language_pack_<lang>*, where the *lang* placeholder
