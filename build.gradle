@@ -60,7 +60,7 @@ extensionConfig {
 
     // define RapidMiner version and extension dependencies
     dependencies {
-        rapidminer '9.4.0'
+        rapidminer '9.5.0'
     }
     def groupID = project.group.replace('.', '/')
     def extName = name.replace(' ', '')
